@@ -1,0 +1,101 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/types.h>         
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <errno.h>
+#include <string.h>
+#include <arpa/inet.h>
+#include <unistd.h>
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+int sock;      // client socket discriptor
+int a,b,c,i;
+unsigned int len;
+char ch[3]="no";
+char ch1[3];
+
+struct sockaddr_in client;
+if((sock=socket(AF_INET,SOCK_STREAM,0))==-1){  // client socket is created..
+perror("socket: ");
+exit(-1);
+}
+
+client.sin_family=AF_INET;
+client.sin_port=htons(5485);        // initializing  socket  parameters 
+client.sin_addr.s_addr=INADDR_ANY;
+//inet_addr("127.0.0.1");
+bzero(&client.sin_zero,0); //appending 8 byte zeroes to 'struct sockaddr_in', to make it equal in size with 'struct sockaddr'.. 
+
+
+len=sizeof(struct sockaddr_in);
+if((connect(sock,(struct sockaddr *)&client,len))==-1){  //conneting to client
+perror("connect: ");
+exit(-1);
+}
+
+char* f[30];
+f[0]="a";
+f[1]="b";
+f[2]="c";
+f[3]="d";
+f[4]="e";
+f[5]="f";
+f[6]="g";
+f[7]="h";
+f[8]="i";
+f[9]="j";
+f[10]="k";
+f[11]="l";
+f[12]="m";
+f[13]="n";
+f[14]="o";
+f[15]="p";
+f[16]="q";
+f[17]="r";
+f[18]="s";
+f[19]="t";
+f[20]="u";
+
+
+while(1){
+
+int num;
+printf("\nenter the employee id: ");
+scanf("%d",&num);
+num-=1000;
+char* sal;
+sal=f[num];
+send(sock,sal,sizeof(sal),0);
+string y,z;
+printf("How much EL and CL u want\n");
+cin>>y>>z;
+printf("\n send. ");
+
+char c1[100];
+recv(sock,c1,sizeof(c1),0);
+printf("\n");
+printf("available EL is: ");
+printf("%s\n",c1);
+if(c1>=y) cout<<"you can get EL\n";
+else cout<<"you can't\n";
+//char c1[100];
+recv(sock,c1,sizeof(c1),0);
+printf("available CL is: ");
+printf("%s\n",c1);
+if(c1>=z) cout<<"you can get CL\n";
+else cout<<"you can't\n";
+printf("\nTo exit...press 'no'\n");
+scanf("%s",ch1);
+//printf("%s\n",ch1);
+//printf("%s\n",ch);
+
+if((i=strcmp(ch,ch1))==0){
+close(sock);
+exit(0);
+}
+
+}
+
+}
